@@ -1,35 +1,94 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
 
 export default function HomePage() {
+  const [prompt, setPrompt] = useState("");
+  const [tiktokUrl, setTiktokUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!prompt.trim() || !tiktokUrl.trim()) {
+      alert("Please fill in both fields");
+      return;
+    }
+
+    setIsLoading(true);
+    // TODO: Add your processing logic here
+    console.log("Prompt:", prompt);
+    console.log("TikTok URL:", tiktokUrl);
+
+    // Simulate processing
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsLoading(false);
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+        <div className="text-center">
+          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] mb-4">
+            TikTok <span className="text-[hsl(280,100%,70%)]">AI</span> Tool
+          </h1>
+          <p className="text-xl text-gray-300 max-w-2xl">
+            Transform TikTok videos with AI-powered prompts
+          </p>
+        </div>
+
+        <div className="w-full max-w-2xl">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="prompt" className="block text-lg font-medium text-gray-200">
+                AI Prompt
+              </label>
+              <textarea
+                id="prompt"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Enter your AI prompt here..."
+                className="w-full h-32 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[hsl(280,100%,70%)] focus:border-transparent resize-none backdrop-blur-sm"
+                required
+              />
             </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
+
+            <div className="space-y-2">
+              <label htmlFor="tiktokUrl" className="block text-lg font-medium text-gray-200">
+                TikTok Video URL
+              </label>
+              <input
+                id="tiktokUrl"
+                type="url"
+                value={tiktokUrl}
+                onChange={(e) => setTiktokUrl(e.target.value)}
+                placeholder="https://www.tiktok.com/@username/video/..."
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[hsl(280,100%,70%)] focus:border-transparent backdrop-blur-sm"
+                required
+              />
             </div>
-          </Link>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-4 px-6 bg-gradient-to-r from-[hsl(280,100%,70%)] to-[hsl(260,100%,60%)] hover:from-[hsl(280,100%,75%)] hover:to-[hsl(260,100%,65%)] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-semibold text-white text-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Processing...
+                </div>
+              ) : (
+                "Process Video"
+              )}
+            </button>
+          </form>
+        </div>
+
+        <div className="text-center text-gray-400 text-sm max-w-lg">
+          <p>
+            Upload your TikTok video URL and provide an AI prompt to transform and analyze your content.
+            Ensure your URL is valid and accessible.
+          </p>
         </div>
       </div>
     </main>
